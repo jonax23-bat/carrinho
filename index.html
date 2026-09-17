@@ -12,12 +12,16 @@
   
   <!-- 1. Catálogo / Estoque Fixo -->
   <h2>Tabela de Produtos Disponíveis</h2>
+   <label for="input-busca">Buscar produto</label>
+    <input type="text" id="input-busca" placeholder="Digite para filtrar...">
   <table>
+   
     <thead>
       <tr>
         <th>Código</th>
         <th>Descrição</th>
         <th>Preço Unitário (R$)</th>
+        <th>Estoque</th>
       </tr>
     </thead>
     <tbody id="tabela-estoque"></tbody>
@@ -50,7 +54,29 @@
       <tr><td colspan="4" style="text-align:center;">Carrinho vazio</td></tr>
     </tbody>
   </table>
+<!--cupons -->
 
+<h2>Gestor de Cupons (Admin)</h2>
+<div class="form-box">
+  <label for="input-cupom-codigo">Código do Cupom:</label>
+  <input type="text" id="input-cupom-codigo" placeholder="Ex: CHURRASCO15">
+
+  <label for="input-cupom-desconto">Desconto (1 a 100):</label>
+  <input type="number" id="input-cupom-desconto" min="1" max="100">
+
+  <button onclick="cadastrarCupom()">Incluir Cupom</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Desconto (%)</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody id="tabela-cupons"></tbody>
+</table>
   <!-- 4. Finalização -->
   <button onclick="finalizarCompra()">Finalizar Compra</button>
   <div id="resultado-total" class="total-box"></div>
