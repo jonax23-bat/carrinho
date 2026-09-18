@@ -11,6 +11,8 @@ const estoque = [
 //criar carrinho
 let carrinho =[];
 
+let cupomAplicado = null;
+
 //cupom de promoçao 
 let cupons= [];
 //salvar cupons
@@ -42,6 +44,32 @@ function renderizarCupons(){
         
         `;
 })
+}
+//aplicar cupom
+function aplicarCupom(){
+    if(carrinho.length === 0  ){
+        alert("adicione itrens ao carrinho antes de aplicar um cupom.");
+        return
+    }
+
+    const codigo = document.getElementById("input-cupom").value.trim().toUpperCase();
+    if(!codigo){
+        alert("digite o codigo do cupom");
+        return;
+    }
+    if(cupomAplicado){
+        alert("ja existe um cupom aplicado neste pedido.");
+        return;
+    }
+    const cupomEncontrado = cupons.find( c => c.codigo.toUpperCase()=== codigo);
+    if(!cupomEncontrado){
+        alert("cupom invalido ou inexistente.");
+        return;
+    }
+    cupomAplicado = cupomEncontrado;
+    document.getElementById("input-cupom").value = "";
+    document.getElementById("resultado-total").innerText = "Cupom" + cupomAplicado.codigo + "aplicado!";
+
 }
 //excluir cupons
 function excluirCupom(codigo){
@@ -231,9 +259,22 @@ function finalizarCompra(){
         alert("adicione item aos carrinhos antes de finalizar ");
         return;
     }
-    const totalGeral = carrinho.reduce((acumulador,item)=> acumulador + item.subtotal,0);
-    document.getElementById("resultado-total").innerText = `Compra finalizada com sucesso. valor total: R$ ${totalGeral.toFixed(2)} `
+    const subtotal = carrinho.reduce((acumulador,item)=> acumulador + item.subtotal, 0);
 
+    let valorDesconto = 0;
+    let linhaCupom = "Cupom: nenhum";
+    if(cupomAplicado){
+        valorDesconto = subtotal * (cupomAplicado.desconto/ 100);
+        linhaCupom = `Cupom ${cupomAplicado.codigo} (${cupomAplicado.desconto}%): - R$ ${valorDesconto.toFixed(2)}`;
+    }
+    const valorFinal = subtotal - valorDesconto;
+
+    document.getElementById("resultado-total").innerHTML = `
+        <p>Compra finalizada com sucesso!</p>
+        <p>Subtotal: R$ ${subtotal.toFixed(2)}</p>
+        <p>${linhaCupom}</p>
+        <p>Valor final: R$ ${valorFinal.toFixed(2)}</p>
+    `;
 }
 document.getElementById("input-busca").addEventListener("input",function(){
     carregarEstoque(this.value);
