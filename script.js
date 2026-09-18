@@ -215,7 +215,7 @@ function atualizarTabelaCarrinho (){
     const tbodyCarrinho=document.getElementById("tabela-carrinho");
     tbodyCarrinho.innerHTML="";
     if (carrinho.length === 0 ){
-        tbodyCarrinho.innerHTML =`<tr><td colspan="5" style="text-align:center;">Carrinho vazio</td></tr>`;   
+        tbodyCarrinho.innerHTML =`<tr><td colspan="5" class="carrinho-vazio">Carrinho vazio</td></tr>`;   
         return; 
     }
 

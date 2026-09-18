@@ -31,20 +31,20 @@ Evoluir o carrinho de compras da aula para um mini PDV, adicionando novas funç�
 
 ### ⏳ Falta fazer
 
-**Módulo 3 - Carrinho Interativo (Passo 7, adiado)**
-- [ ] Coluna "Ações" na tabela do carrinho.
-- [ ] Botão **Remover** em cada linha (`removerDoCarrinho`).
-- [ ] Devolver a quantidade ao estoque ao remover.
-- [ ] Recalcular subtotais / re-renderizar na hora.
-- [ ] *(Opcional bonus)* `salvarCarrinho()` / `carregarCarrinhoDoBanco()`.
+**Módulo 3 - Carrinho Interativo (Passo 7, adiado)** — data: 17/09/2026
+- [x] Coluna "Ações" na tabela do carrinho.
+- [x] Botão **Remover** em cada linha (`removerDoCarrinho`).
+- [x] Devolver a quantidade ao estoque ao remover.
+- [x] Recalcular subtotais / re-renderizar na hora.
+- [x] *(Opcional bonus)* `salvarCarrinho()` / `carregarCarrinhoDoBanco()`.
 
 **Módulo 4 - Fechamento e Cupom**
-- [ ] Campo de checkout para digitar o cupom + botão **Aplicar Cupom**.
-- [ ] Validação do cupom (busca ignorando maiúsculas/minúsculas, erro amigável, 1 cupom por pedido).
-- [ ] Extrato financeiro em `finalizarCompra()`: Subtotal (`reduce`) + Cupom aplicado (código, % e R$ abatido) + Valor final.
+- [x] Campo de checkout para digitar o cupom + botão **Aplicar Cupom**.
+- [x] Validação do cupom (busca ignorando maiúsculas/minúsculas, erro amigável, 1 cupom por pedido).
+- [x] Extrato financeiro em `finalizarCompra()`: Subtotal (`reduce`) + Cupom aplicado (código, % e R$ abatido) + Valor final.
 
 **Finalização**
-- [ ] CSS: ajustes visuais/responsivos, remover estilos inline restantes (`colspan="4"` do carrinho usa `style=` interno).
+- [x] CSS: classe `.carrinho-vazio` no lugar dos `style=` inline.
 - [ ] Testes finais (F5 mantém dados, fluxo completo, cupom inválido).
 - [ ] Git/GitHub: commits em etapas e publicação (link final).
 
@@ -54,8 +54,8 @@ Evoluir o carrinho de compras da aula para um mini PDV, adicionando novas funç�
 
 | Arquivo | O que temos hoje |
 |---|---|
-| `index.html` | Tabela de estoque (com coluna Estoque), busca, formulário adicionar, carrinho, gestor de cupons (form + tabela), Finalizar Compra |
-| `script.js` | `estoque`, `carrinho`, `cupons`; `filtrarEstoque`, `salvarEstoque`, `carregarEstoqueDoBanco`, `carregarEstoque`, `adicionarAoCarrinho`, `atualizarTabelaCarrinho`, `finalizarCompra`, `salvarCupons`, `carregarCuponsDoBanco`, `renderizarCupons`, `excluirCupom`, `cadastrarCupom` |
+| `index.html` | Tabela de estoque (com coluna Estoque), busca, formulário adicionar, carrinho (com coluna Ações), gestor de cupons (form + tabela), caixa de Fechamento (cupom) e Finalizar Compra |
+| `script.js` | `estoque`, `carrinho`, `cupons`, `cupomAplicado`; `filtrarEstoque`, `salvarEstoque`, `carregarEstoqueDoBanco`, `carregarEstoque`, `adicionarAoCarrinho`, `atualizarTabelaCarrinho`, `removerDoCarrinho`, `salvarCarrinho`, `carregarCarrinhoDoBanco`, `finalizarCompra`, `aplicarCupom`, `salvarCupons`, `carregarCuponsDoBanco`, `renderizarCupons`, `excluirCupom`, `cadastrarCupom` |
 | `style.css` | Estilo limpo com classes `.form-box` e `.total-box` |
 
 ---
@@ -76,7 +76,7 @@ Evoluir o carrinho de compras da aula para um mini PDV, adicionando novas funç�
 |---|---|---|
 | Estoque | `estoque_pdv` | ✅ salvando/baixando |
 | Cupons | `cupons_pdv` | ✅ salvando |
-| Carrinho | `carrinho_pdv` | ⏳ pendente (bônus) |
+| Carrinho | `carrinho_pdv` | ✅ salvando/carregando |
 | Pedidos (histórico) | `pedidos_pdv` | ⏳ pendente (ao finalizar) |
 
 - Na abertura da página: carregar do `localStorage`; se não houver nada salvo, usar os valores iniciais.
@@ -98,8 +98,8 @@ Evoluir o carrinho de compras da aula para um mini PDV, adicionando novas funç�
 ## 6. Decisões em Aberto
 
 - **Estoque inicial** de cada produto já definido como 10 (pode ajustar depois).
-- **Carrinho persistir** no F5: definido como opcional — confirmar se quer incluir.
-- **Histórico de pedidos**: gravar `pedidos_pdv` ao finalizar é recomendado, pendente de confirmação.
+- **Carrinho persistir** no F5: **decidido incluir** — implementado (`carrinho_pdv`).
+- **Histórico de pedidos**: **decidido não gravar por enquanto** (`pedidos_pdv` fica para depois).
 
 ---
 
