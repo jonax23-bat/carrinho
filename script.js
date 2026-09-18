@@ -59,6 +59,18 @@ function filtrarEstoque(termo){
 function salvarEstoque(){
     localStorage.setItem("estoque_pdv", JSON.stringify(estoque));
 }
+//perssistir estoque 
+function salvarCarrinho(){
+    localStorage.setItem("carrinho_pdv", JSON.stringify(carrinho));
+
+}
+function carregarCarrinhoDoBanco(){
+    const dadosSalvos = localStorage.getItem("carrinho_pdv");
+    if(dadosSalvos){
+        carrinho = JSON.parse(dadosSalvos);
+    }
+}
+
 //salvar no banco  local 
 function carregarEstoqueDoBanco(){
     const dadosSalvos = localStorage.getItem("estoque_pdv");
@@ -155,6 +167,7 @@ const itemExistente = carrinho.find(item => item.codigo === codigo);
 
 produtoEncontrado.quantidadeEmEstoque-=quantidade;
 salvarEstoque();
+salvarCarrinho();
 atualizarTabelaCarrinho();
 carregarEstoque();
     
@@ -174,7 +187,7 @@ function atualizarTabelaCarrinho (){
     const tbodyCarrinho=document.getElementById("tabela-carrinho");
     tbodyCarrinho.innerHTML="";
     if (carrinho.length === 0 ){
-        tbodyCarrinho.innerHTML =`<tr><td colspan="4" style="text-align:center;">Carrinho vazio</td></tr>`;   
+        tbodyCarrinho.innerHTML =`<tr><td colspan="5" style="text-align:center;">Carrinho vazio</td></tr>`;   
         return; 
     }
 
@@ -186,11 +199,29 @@ function atualizarTabelaCarrinho (){
                 <td>${item.quantidade}</td>
                 <td>${item.precoUnitario.toFixed(2)}</td>
                 <td>${item.subtotal.toFixed(2)}</td>
+                <td><button onclick="removerDoCarrinho(${item.codigo})">Remover</button></td>
             </tr>
         `;
 
 
     }  );
+
+    }
+    
+    function removerDoCarrinho(codigo){
+        const item = carrinho.find(i => i.codigo===codigo);
+        const produto = estoque.find(p => p.codigo === codigo);
+
+        if(produto){
+            produto.quantidadeEmEstoque += item.quantidade;
+        }
+        carrinho = carrinho.filter(i=> i.codigo!==codigo);
+
+        salvarEstoque();
+        salvarCarrinho();
+        atualizarTabelaCarrinho();
+        carregarEstoque(document.getElementById("input-busca").value);
+
 
     }
 
@@ -211,6 +242,7 @@ document.getElementById("input-busca").addEventListener("input",function(){
 carregarCuponsDoBanco();
 renderizarCupons();
 carregarEstoqueDoBanco();
-
+carregarCarrinhoDoBanco();
+atualizarTabelaCarrinho();
 carregarEstoque();
 
